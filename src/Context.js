@@ -22,9 +22,14 @@ const ContextProvider = ({ children }) => {
         setStream(currentStream);
         if (myVideo.current) {
           myVideo.current.srcObject = currentStream;
+          myVideo.onloadedmetadata = (e) => {
+            myVideo.play();
+          };
         }
+      })
+      .catch((err) => {
+        console.log(err.name + ": " + err.message);
       });
-
     socket.on("me", (id) => setMe(id));
     socket.on("callUser", ({ from, name: callerName, signal }) => {
       setCall({ isReceivingCall: true, from, name: callerName, signal });
