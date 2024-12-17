@@ -38,6 +38,13 @@ const ContextProvider = ({ children }) => {
     stream.getVideoTracks()[0].enabled = !video;
   };
 
+  useEffect(() => {
+    socket.on("me", (id) => setMe(id));
+    socket.on("callUser", ({ from, name: callerName, signal }) => {
+      setCall({ isReceivingCall: true, from, name: callerName, signal });
+    });
+  }, []);
+
   const startStream = async () => {
     await navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -48,11 +55,6 @@ const ContextProvider = ({ children }) => {
       });
 
     setPlaying(true);
-
-    socket.on("me", (id) => setMe(id));
-    socket.on("callUser", ({ from, name: callerName, signal }) => {
-      setCall({ isReceivingCall: true, from, name: callerName, signal });
-    });
   };
 
   const answerCall = () => {
