@@ -8,6 +8,13 @@ const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [stream, setStream] = useState();
+  // controls if media input is on or off
+  const [playing, setPlaying] = useState(false);
+
+  // controls if audio/video is on or off (seperately from each other)
+  const [audio, setAudio] = useState(true);
+  const [video, setVideo] = useState(true);
+
   const [name, setName] = useState("");
   const [call, setCall] = useState({});
   const [me, setMe] = useState("");
@@ -15,24 +22,38 @@ const ContextProvider = ({ children }) => {
   const userVideo = useRef();
   const connectionRef = useRef();
 
-  useEffect(() => {
-    if (navigator.mediaDevices.getUserMedia)
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((currentStream) => {
-          setStream(currentStream);
-          if (myVideo.current) {
-            myVideo.current.srcObject = currentStream;
-          }
+  const stopStream = () => {
+    stream.getTracks().forEach((track) => track.stop());
 
-          console.log(myVideo.current);
-        });
+    setPlaying(false);
+  };
+
+  const toggleAudio = () => {
+    setAudio(!audio);
+    stream.getAudioTracks()[0].enabled = audio;
+  };
+
+  const toggleVideo = () => {
+    setVideo(!video);
+    stream.getVideoTracks()[0].enabled = !video;
+  };
+
+  const startStream = async () => {
+    await navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream);
+        console.log(myVideo.current);
+        myVideo.current.srcObject = currentStream;
+      });
+
+    setPlaying(true);
 
     socket.on("me", (id) => setMe(id));
     socket.on("callUser", ({ from, name: callerName, signal }) => {
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
-  }, []);
+  };
 
   const answerCall = () => {
     setCallAccepted(true);
@@ -81,6 +102,11 @@ const ContextProvider = ({ children }) => {
         myVideo,
         userVideo,
         stream,
+        startStream,
+        stopStream,
+        playing,
+        toggleAudio,
+        toggleVideo,
         name,
         setName,
         callEnded,
