@@ -66,8 +66,29 @@ const ContextProvider = ({ children }) => {
       stream,
       config: {
         iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
-          { urls: "stun:stun2.l.google.com:19302" },
+          {
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
         ],
       },
     });
@@ -88,8 +109,29 @@ const ContextProvider = ({ children }) => {
       stream,
       config: {
         iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
-          { urls: "stun:stun2.l.google.com:19302" },
+          {
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "5961fb86deef982ae0c58b36",
+            credential: "m/rFTVWn8ln+zKGv",
+          },
         ],
       },
     });
