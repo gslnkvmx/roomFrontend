@@ -1,57 +1,71 @@
 import { useState, useContext } from "react";
-import {
-  Button,
-  Input,
-  Field,
-  Heading,
-  Grid,
-  Box,
-  Container,
-  Fieldset,
-} from "@chakra-ui/react";
+import { Button, Input, Container, Stack, Flex } from "@chakra-ui/react";
+import { Field } from "./ui/field";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { BiClipboard, BiPhoneCall, BiPhoneOff } from "react-icons/bi";
 import { SocketContext } from "../Context";
 
 const Options = () => {
-  const { me, callAccepted, name, setName, callEnded, leaveCall, callUser } =
-    useContext(SocketContext);
+  const {
+    me,
+    callAccepted,
+    name,
+    setName,
+    callEnded,
+    leaveCall,
+    callUser,
+    stream,
+  } = useContext(SocketContext);
   const [idToCall, setIdToCall] = useState("");
 
   return (
-    <Container maxW="1200px" m="35px 0" p="0">
-      <Input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        width="100%"
-      />
-      <CopyToClipboard text={me} mt="20">
-        <Button colorScheme="teal" variant="solid">
-          Copy ID
-        </Button>
-      </CopyToClipboard>
-      <Heading as="h6"> Make a Call </Heading>
-      <Input
-        type="text"
-        value={idToCall}
-        onChange={(e) => setIdToCall(e.target.value)}
-        width="100%"
-      />
-      {callAccepted && !callEnded ? (
-        <Button onClick={leaveCall} mt="20" colorScheme="teal" variant="solid">
-          Hang up
-        </Button>
-      ) : (
-        <Button
-          onClick={() => callUser(idToCall)}
-          mt="20"
-          colorScheme="teal"
-          variant="solid"
-        >
-          Call
-        </Button>
-      )}
+    <Container fluid centerContent maxW={600} mt={12}>
+      <Flex gap={8} direction={{ base: "column", lg: "row" }} width="100%">
+        <Stack gap={4} width="50%">
+          <Field label="Your Name">
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              width="100%"
+            />
+          </Field>
+
+          <CopyToClipboard text={me}>
+            <Button variant={"surface"} disabled={!stream ? true : false}>
+              Copy ID
+            </Button>
+          </CopyToClipboard>
+        </Stack>
+
+        <Stack gap={4} width="50%">
+          <Field label="Make a call">
+            <Input
+              type="text"
+              placeholder="Enter a room id"
+              value={idToCall}
+              onChange={(e) => setIdToCall(e.target.value)}
+              width="100%"
+            />
+          </Field>
+
+          {callAccepted && !callEnded ? (
+            <Button onClick={leaveCall} colorScheme="teal" variant={"surface"}>
+              Hang up
+            </Button>
+          ) : (
+            <Button
+              onClick={() => callUser(idToCall)}
+              colorScheme="teal"
+              variant={"surface"}
+              disabled={!stream ? true : false}
+            >
+              Call
+            </Button>
+          )}
+        </Stack>
+      </Flex>
     </Container>
   );
 };

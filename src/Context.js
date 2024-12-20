@@ -12,7 +12,7 @@ const ContextProvider = ({ children }) => {
   const [playing, setPlaying] = useState(false);
 
   // controls if audio/video is on or off (seperately from each other)
-  const [audio, setAudio] = useState(true);
+  const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(true);
 
   const [name, setName] = useState("");
@@ -35,6 +35,7 @@ const ContextProvider = ({ children }) => {
 
   const toggleVideo = () => {
     setVideo(!video);
+    setPlaying(!playing);
     stream.getVideoTracks()[0].enabled = !video;
   };
 
@@ -59,7 +60,17 @@ const ContextProvider = ({ children }) => {
 
   const answerCall = () => {
     setCallAccepted(true);
-    const peer = new Peer({ initiator: false, trickle: false, stream });
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream,
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" },
+        ],
+      },
+    });
     peer.on("signal", (data) => {
       socket.emit("answerCall", { signal: data, to: call.from });
     });
@@ -71,7 +82,17 @@ const ContextProvider = ({ children }) => {
   };
 
   const callUser = (id) => {
-    const peer = new Peer({ initiator: true, trickle: false, stream });
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream,
+      config: {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" },
+        ],
+      },
+    });
     peer.on("signal", (data) => {
       socket.emit("callUser", {
         userToCall: id,

@@ -1,6 +1,20 @@
-import { Grid, Box, Heading } from "@chakra-ui/react";
+import { Switch } from "./ui/switch";
+import {
+  Button,
+  Box,
+  Heading,
+  Stack,
+  Container,
+  AbsoluteCenter,
+  Image,
+  Float,
+  Flex,
+} from "@chakra-ui/react";
+
 import { SocketContext } from "../Context";
 import { useContext } from "react";
+import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import { BiSolidCamera, BiSolidCameraOff } from "react-icons/bi";
 
 const VideoPlayer = () => {
   const {
@@ -19,30 +33,92 @@ const VideoPlayer = () => {
   } = useContext(SocketContext);
 
   return (
-    <Grid justifyContent="center" templateColumns="repeat(2, 1fr)" mt="12">
-      {/* my video */}
-      {
-        <Box>
-          <Grid colSpan={1}>
-            <Heading as="h5">{name || "Name"}</Heading>
-            <video playsInline muted ref={myVideo} autoPlay width="600" />
-          </Grid>
-        </Box>
-      }
-      <button onClick={playing ? stopStream : startStream}>Start webcam</button>
+    <>
+      <Flex gap={6} direction={"column"} my={8}>
+        <Flex gap={4} direction={{ base: "column", lg: "row" }}>
+          {/* my video */}
+          {
+            <Container
+              maxW={600}
+              minH={340}
+              borderRadius={5}
+              background={"gray.900"}
+            >
+              <AbsoluteCenter>
+                {playing ? null : (
+                  <Image
+                    src="cameraBlack.png"
+                    style={{ filter: "invert(100%)" }}
+                    width={200}
+                  ></Image>
+                )}
+              </AbsoluteCenter>
+              <video playsInline muted ref={myVideo} autoPlay />
+              <Float placement="bottom-center" offsetY="8">
+                <Box bg="gray.700/60" px={4} borderRadius={4}>
+                  <Heading as="h5" whiteSpace={"nowrap"}>
+                    {name || null}
+                  </Heading>
+                </Box>
+              </Float>
+            </Container>
+          }
 
-      <button onClick={toggleAudio}>Toggle Sound</button>
-      <button onClick={toggleVideo}>Toggle Video</button>
-      {/* user's video */}
-      {callAccepted && !callEnded && (
-        <Box>
-          <Grid colSpan={1}>
-            <Heading as="h5">{call.name || "Name"}</Heading>
-            <video playsInline ref={userVideo} autoPlay width="600" />
-          </Grid>
-        </Box>
-      )}
-    </Grid>
+          {/* user's video */}
+          {callAccepted && !callEnded && (
+            <Container
+              maxW={600}
+              minH={340}
+              borderRadius={5}
+              background={"gray.900"}
+            >
+              <Float placement="bottom-center" offsetY="8">
+                <Box bg="gray.700/60" px={4} borderRadius={4}>
+                  <Heading as="h5" whiteSpace={"nowrap"}>
+                    {call.name || null}
+                  </Heading>
+                </Box>
+              </Float>
+              <video playsInline ref={userVideo} maxH={400} autoPlay />
+            </Container>
+          )}
+        </Flex>
+
+        <Stack direction={"row"} alignSelf={"center"}>
+          {!stream ? (
+            <Button
+              variant={"solid"}
+              onClick={playing ? stopStream : startStream}
+            >
+              Connect devices to start a call!
+            </Button>
+          ) : (
+            <>
+              <Switch
+                size="lg"
+                thumbLabel={{
+                  on: <FaMicrophone />,
+                  off: <FaMicrophoneSlash color="black" />,
+                }}
+                onCheckedChange={toggleAudio}
+                defaultChecked
+                disabled={!stream ? true : false}
+              ></Switch>
+              <Switch
+                size="lg"
+                thumbLabel={{
+                  on: <BiSolidCamera />,
+                  off: <BiSolidCameraOff color="black" />,
+                }}
+                onCheckedChange={toggleVideo}
+                defaultChecked
+                disabled={!stream ? true : false}
+              ></Switch>
+            </>
+          )}
+        </Stack>
+      </Flex>
+    </>
   );
 };
 export default VideoPlayer;

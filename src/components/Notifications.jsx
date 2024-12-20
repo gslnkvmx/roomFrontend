@@ -7,17 +7,18 @@ const Notifications = () => {
   return (
     <>
       {call.isReceivingCall && !callAccepted && (
-        <Box display="flex" justifyContent="space-around" mb="20">
+        <Box
+          display="flex"
+          maxW={500}
+          py="2"
+          px="4"
+          justifyContent="space-between"
+          alignContent="center"
+          my="14"
+          mx={"auto"}
+        >
           <Heading as="h3"> {call.name} is calling </Heading>
-          <Button
-            variant="outline"
-            onClick={answerCall}
-            border="1px"
-            borderStyle="solid"
-            borderColor="black"
-          >
-            Answer Call
-          </Button>
+          <Button onClick={answerCall}>Answer Call</Button>
         </Box>
       )}
     </>
