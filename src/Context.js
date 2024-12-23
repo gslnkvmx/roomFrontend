@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import Peer from "simple-peer";
 
 const SocketContext = createContext();
-const socket = io("https://ruddy-shiny-echinodon.glitch.me");
+const socket = io("https://roomserver-g5tq.onrender.com");
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
@@ -14,6 +14,8 @@ const ContextProvider = ({ children }) => {
   // controls if audio/video is on or off (seperately from each other)
   const [audio, setAudio] = useState(false);
   const [video, setVideo] = useState(true);
+
+  const [videoEnabled, setVideoEnabled] = useState(true);
 
   const [name, setName] = useState("");
   const [call, setCall] = useState({});
@@ -49,6 +51,16 @@ const ContextProvider = ({ children }) => {
   const startStream = async () => {
     await navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
+      .catch(() => {
+        navigator.mediaDevices
+          .getUserMedia({ video: false, audio: true })
+          .then((currentStream) => {
+            setStream(currentStream);
+            console.log(myVideo.current);
+            myVideo.current.srcObject = currentStream;
+            setVideoEnabled(true);
+          });
+      })
       .then((currentStream) => {
         setStream(currentStream);
         console.log(myVideo.current);
@@ -179,6 +191,7 @@ const ContextProvider = ({ children }) => {
         callUser,
         leaveCall,
         answerCall,
+        videoEnabled,
       }}
     >
       {children}

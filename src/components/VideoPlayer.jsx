@@ -9,6 +9,7 @@ import {
   Image,
   Float,
   Flex,
+  AspectRatio,
 } from "@chakra-ui/react";
 
 import { SocketContext } from "../Context";
@@ -30,30 +31,32 @@ const VideoPlayer = () => {
     callEnded,
     stream,
     call,
+    videoEnabled,
   } = useContext(SocketContext);
 
   return (
-    <>
+    <Container maxW={1100}>
       <Flex gap={6} direction={"column"} my={8}>
-        <Flex gap={4} direction={{ base: "column", lg: "row" }}>
+        <Flex
+          gap={4}
+          direction={{ base: "column", lg: "row" }}
+          justify={"center"}
+        >
           {/* my video */}
           {
-            <Container
-              maxW={600}
-              minH={340}
-              borderRadius={5}
-              background={"gray.900"}
-            >
+            <Container maxW={500} borderRadius={5} background={"gray.900"}>
               <AbsoluteCenter>
                 {playing ? null : (
                   <Image
                     src="cameraBlack.png"
                     style={{ filter: "invert(100%)" }}
-                    width={200}
+                    width={160}
                   ></Image>
                 )}
               </AbsoluteCenter>
-              <video playsInline muted ref={myVideo} autoPlay />
+              <AspectRatio ratio={4 / 3}>
+                <video playsInline muted ref={myVideo} autoPlay />
+              </AspectRatio>
               <Float placement="bottom-center" offsetY="8">
                 <Box bg="gray.700/60" px={4} borderRadius={4}>
                   <Heading as="h5" whiteSpace={"nowrap"}>
@@ -66,12 +69,7 @@ const VideoPlayer = () => {
 
           {/* user's video */}
           {callAccepted && !callEnded && (
-            <Container
-              maxW={600}
-              minH={340}
-              borderRadius={5}
-              background={"gray.900"}
-            >
+            <Container maxW={500} borderRadius={5} background={"gray.900"}>
               <Float placement="bottom-center" offsetY="8">
                 <Box bg="gray.700/60" px={4} borderRadius={4}>
                   <Heading as="h5" whiteSpace={"nowrap"}>
@@ -79,7 +77,9 @@ const VideoPlayer = () => {
                   </Heading>
                 </Box>
               </Float>
-              <video playsInline ref={userVideo} maxH={400} autoPlay />
+              <AspectRatio ratio={4 / 3}>
+                <video playsInline ref={userVideo} autoPlay />
+              </AspectRatio>
             </Container>
           )}
         </Flex>
@@ -112,13 +112,13 @@ const VideoPlayer = () => {
                 }}
                 onCheckedChange={toggleVideo}
                 defaultChecked
-                disabled={!stream ? true : false}
+                disabled={!stream ? true : false || videoEnabled ? true : false}
               ></Switch>
             </>
           )}
         </Stack>
       </Flex>
-    </>
+    </Container>
   );
 };
 export default VideoPlayer;

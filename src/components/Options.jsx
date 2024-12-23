@@ -19,9 +19,9 @@ const Options = () => {
   const [idToCall, setIdToCall] = useState("");
 
   return (
-    <Container fluid centerContent maxW={600} mt={12}>
-      <Flex gap={8} direction={{ base: "column", lg: "row" }} width="100%">
-        <Stack gap={4} width="50%">
+    <Container fluid centerContent maxW={600} mt={12} textStyle="xl">
+      <Flex gap={8} direction={{ base: "column", sm: "row" }} width="100%">
+        <Stack gap={4} width="100%">
           <Field label="Your Name">
             <Input
               type="text"
@@ -39,7 +39,7 @@ const Options = () => {
           </CopyToClipboard>
         </Stack>
 
-        <Stack gap={4} width="50%">
+        <Stack gap={4} width="100%">
           <Field label="Make a call">
             <Input
               type="text"

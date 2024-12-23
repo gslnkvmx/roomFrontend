@@ -3,8 +3,8 @@ import Notifications from "./components/Notifications";
 import Options from "./components/Options";
 import VideoPlayer from "./components/VideoPlayer";
 import { ColorModeButton } from "./components/ui/color-mode";
-import { Avatar } from "./components/ui/avatar";
 import { PiFinnTheHumanDuotone } from "react-icons/pi";
+import UserDrawer from "./components/UserDrawer";
 
 function App() {
   return (
@@ -12,9 +12,9 @@ function App() {
       <Box>
         <Container maxW="1400px" mt="8">
           <Flex w={"full"} justify={"space-between"} align={"center"} mb="10">
-            <img src="Logo.png" width="180px"></img>
+            <img src="Logo.png" width="150px"></img>
             <div></div>
-            <Avatar></Avatar>
+            <UserDrawer></UserDrawer>
           </Flex>
 
           <VideoPlayer />
