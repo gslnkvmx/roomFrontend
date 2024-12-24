@@ -27,7 +27,9 @@ const Login = () => {
       },
       (error) => {
         console.log(error.response.data.message);
-        setError("Error! " + error.response.data.message);
+        let errMessage = error.response.data.message;
+        if (errMessage == undefined) errMessage = "Provide valid email!";
+        setError("Error! " + errMessage);
       }
     );
   });
@@ -71,7 +73,7 @@ const Login = () => {
           <Button type="submit" size={"md"} w={"100%"}>
             Login
           </Button>
-          <Text color={"red"}>{error}</Text>
+          <Text color={"red.300"}>{error}</Text>
         </Stack>
       </form>
     </AbsoluteCenter>
