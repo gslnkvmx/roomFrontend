@@ -13,7 +13,7 @@ import { Avatar } from "./ui/avatar";
 import { LuBan, LuCheck, LuPlus } from "react-icons/lu";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/";
+const API_URL = "https://roomserver-g5tq.onrender.com/";
 
 function FriendsList() {
   const [friendToAdd, setFriendToAdd] = useState("");
