@@ -14,7 +14,7 @@ import { LuBan, LuCheck, LuPhone, LuPlus } from "react-icons/lu";
 import axios from "axios";
 import { SocketContext } from "../Context";
 
-const API_URL = "https://roomserver-g5tq.onrender.com/";
+const API_URL = "http://localhost:5000/";
 
 function FriendsList() {
   const { callUser, stream } = useContext(SocketContext);
@@ -120,17 +120,14 @@ function FriendsList() {
   const call = async (email) => {
     console.log(AuthService.getCurrentUser().token);
     axios
-      .get(
-        API_URL + "peer",
-        {
+      .get(API_URL + "peer", {
+        params: {
           email: email,
         },
-        {
-          headers: {
-            token: AuthService.getCurrentUser().token,
-          },
-        }
-      )
+        headers: {
+          token: AuthService.getCurrentUser().token,
+        },
+      })
       .then(function (response) {
         const peerId = response.data.peerId;
         callUser(peerId);
