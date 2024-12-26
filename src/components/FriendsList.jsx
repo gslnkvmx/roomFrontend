@@ -155,6 +155,7 @@ function FriendsList() {
                   size={"xs"}
                   colorPalette={"green"}
                   disabled={!stream ? true : false}
+                  onClick={() => call(item.email)}
                 >
                   <LuPhone />
                 </IconButton>
