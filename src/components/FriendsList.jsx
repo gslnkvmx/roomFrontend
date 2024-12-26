@@ -117,18 +117,19 @@ function FriendsList() {
       });
   }, []);
 
-  const call = async (email) => {
+  const call = async (friendId) => {
     console.log(AuthService.getCurrentUser().token);
     axios
       .get(API_URL + "peer", {
         params: {
-          email: email,
+          friendId: friendId,
         },
         headers: {
           token: AuthService.getCurrentUser().token,
         },
       })
       .then(function (response) {
+        console.log(response.data);
         const peerId = response.data.peerId;
         callUser(peerId);
         console.log(response.data.peerId);
@@ -153,7 +154,7 @@ function FriendsList() {
                   size={"xs"}
                   colorPalette={"green"}
                   disabled={!stream ? true : false}
-                  onClick={() => call(item.email)}
+                  onClick={() => call(item._id)}
                 >
                   <LuPhone />
                 </IconButton>

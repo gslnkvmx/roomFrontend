@@ -77,6 +77,7 @@ const ContextProvider = ({ children }) => {
       .post(
         API_URL + "peer",
         {
+          userId: AuthService.getCurrentUser().user._id,
           email: AuthService.getCurrentUser().user.email,
           username: AuthService.getCurrentUser().user.username,
           peerId: me,
