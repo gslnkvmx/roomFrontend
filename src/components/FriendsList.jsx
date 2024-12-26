@@ -56,8 +56,29 @@ function FriendsList() {
       )
       .then(function (response) {
         console.log(response);
-        getFriends();
-        getRequests();
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const RefuseFriend = async (friendId) => {
+    axios
+      .put(
+        API_URL + "friend/refuse",
+        {
+          friendId: friendId,
+        },
+        {
+          headers: {
+            token: AuthService.getCurrentUser().token,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
@@ -149,6 +170,7 @@ function FriendsList() {
                       m="2"
                       colorPalette="red"
                       variant="surface"
+                      onClick={() => RefuseFriend(item._id)}
                     >
                       <LuBan />
                     </IconButton>
