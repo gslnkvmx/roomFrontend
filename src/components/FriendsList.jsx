@@ -14,7 +14,7 @@ import { LuBan, LuCheck, LuPhone, LuPlus } from "react-icons/lu";
 import axios from "axios";
 import { SocketContext } from "../Context";
 
-const API_URL = "http://localhost:5000/";
+const API_URL = "https://roomserver-g5tq.onrender.com/";
 
 function FriendsList() {
   const { callUser, stream } = useContext(SocketContext);
