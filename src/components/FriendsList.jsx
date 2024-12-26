@@ -118,6 +118,7 @@ function FriendsList() {
   }, []);
 
   const call = async (email) => {
+    console.log(AuthService.getCurrentUser().token);
     axios
       .get(
         API_URL + "peer",
