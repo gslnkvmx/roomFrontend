@@ -16,12 +16,13 @@ import {
 } from "./ui/drawer";
 import { useState } from "react";
 import AuthService from "../services/AuthService";
+import FriendsList from "./FriendsList";
 
 const UserDrawer = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+    <DrawerRoot size="sm" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DrawerBackdrop />
       <DrawerTrigger asChild _hover={{ cursor: "pointer" }}>
         {AuthService.getCurrentUser() ? (
@@ -58,10 +59,26 @@ const UserDrawer = () => {
             </Stack>
           ) : (
             <Stack>
-              <Heading>{AuthService.getCurrentUser().user.username}</Heading>
+              <Heading ml={8}>Friends</Heading>
+              <FriendsList />
             </Stack>
           )}
         </DrawerBody>
+        <DrawerFooter>
+          {AuthService.getCurrentUser() != null ? (
+            <Button
+              type="submit"
+              colorPalette="red"
+              variant={"ghost"}
+              w={"100%"}
+              onClick={() => {
+                AuthService.logout();
+              }}
+            >
+              Log out
+            </Button>
+          ) : null}
+        </DrawerFooter>
         <DrawerCloseTrigger />
       </DrawerContent>
     </DrawerRoot>

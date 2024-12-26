@@ -58,7 +58,7 @@ const ContextProvider = ({ children }) => {
             setStream(currentStream);
             console.log(myVideo.current);
             myVideo.current.srcObject = currentStream;
-            setVideoEnabled(true);
+            setVideoEnabled(false);
           });
       })
       .then((currentStream) => {

@@ -112,7 +112,9 @@ const VideoPlayer = () => {
                 }}
                 onCheckedChange={toggleVideo}
                 defaultChecked
-                disabled={!stream ? true : false || videoEnabled ? true : false}
+                disabled={
+                  !stream ? true : false || !videoEnabled ? true : false
+                }
               ></Switch>
             </>
           )}
