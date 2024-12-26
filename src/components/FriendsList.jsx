@@ -7,15 +7,17 @@ import {
   IconButton,
   Box,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AuthService from "../services/AuthService";
 import { Avatar } from "./ui/avatar";
-import { LuBan, LuCheck, LuPlus } from "react-icons/lu";
+import { LuBan, LuCheck, LuPhone, LuPlus } from "react-icons/lu";
 import axios from "axios";
+import { SocketContext } from "../Context";
 
 const API_URL = "https://roomserver-g5tq.onrender.com/";
 
 function FriendsList() {
+  const { callUser, stream } = useContext(SocketContext);
   const [friendToAdd, setFriendToAdd] = useState("");
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
@@ -115,15 +117,47 @@ function FriendsList() {
       });
   }, []);
 
+  const call = async (email) => {
+    axios
+      .get(
+        API_URL + "peer",
+        {
+          email: email,
+        },
+        {
+          headers: {
+            token: AuthService.getCurrentUser().token,
+          },
+        }
+      )
+      .then(function (response) {
+        const peerId = response.data.peerId;
+        callUser(peerId);
+        console.log(response.data.peerId);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Container>
       <Stack as="ul" listStyleType="none" gap={4}>
         {friends.map((item, i) => {
           return (
             <li key={i}>
-              <Flex w={"100%"} align={"center"}>
-                <Avatar variant="outline" name={item.email} />
-                <Text ml={2}>{item.email}</Text>
+              <Flex w={"100%"} align={"center"} justify="space-between">
+                <Flex align={"center"}>
+                  <Avatar variant="outline" name={item.email} />
+                  <Text ml={2}>{item.email}</Text>
+                </Flex>
+                <IconButton
+                  size={"xs"}
+                  colorPalette={"green"}
+                  disabled={!stream ? true : false}
+                >
+                  <LuPhone />
+                </IconButton>
               </Flex>
             </li>
           );

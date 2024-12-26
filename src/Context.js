@@ -1,6 +1,10 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
+import axios from "axios";
+import AuthService from "./services/AuthService";
+
+const API_URL = "https://roomserver-g5tq.onrender.com/";
 
 const SocketContext = createContext();
 const socket = io("https://roomserver-g5tq.onrender.com");
@@ -68,6 +72,27 @@ const ContextProvider = ({ children }) => {
       });
 
     setPlaying(true);
+
+    axios
+      .post(
+        API_URL + "peer",
+        {
+          email: AuthService.getCurrentUser().user.email,
+          username: AuthService.getCurrentUser().user.username,
+          peerId: me,
+        },
+        {
+          headers: {
+            token: AuthService.getCurrentUser().token,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const answerCall = () => {
