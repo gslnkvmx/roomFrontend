@@ -56,14 +56,15 @@ function FriendsList() {
       )
       .then(function (response) {
         console.log(response);
+        getFriends();
+        getRequests();
       })
       .catch(function (error) {
         console.log(error);
       });
-    window.location.reload();
   };
 
-  useEffect(() => {
+  const getFriends = useEffect(() => {
     axios
       .get(API_URL + "user/friends", {
         headers: {
@@ -78,7 +79,7 @@ function FriendsList() {
       });
   }, []);
 
-  useEffect(() => {
+  const getRequests = useEffect(() => {
     axios
       .get(API_URL + "user/friendRequests", {
         headers: {
